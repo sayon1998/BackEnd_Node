@@ -13,6 +13,14 @@ router.get("/student-details/:currentpage/:pagelimit", async (req, res) => {
       resType["Message"] = err.message;
       res.status(400).send(resType);
     }
+    if (!req.params.currentpage || req.params.currentpage == 0) {
+      resType["Message"] = "Current page is Required and it can not be Zero";
+      return res.status(400).send(resType);
+    }
+    if (!req.params.pagelimit || req.params.pagelimit == 0) {
+      resType["Message"] = "Page limit is Required and it can not be Zero";
+      return res.status(400).send(resType);
+    }
     var startIndex = (req.params.currentpage - 1) * req.params.pagelimit;
     const studentData = [];
     for (
@@ -31,11 +39,11 @@ router.get("/student-details/:currentpage/:pagelimit", async (req, res) => {
       resType["Data"] = studentData;
       resType["Count"] = params.length;
       resType["Status"] = true;
-      res.status(200).send(resType);
+      return res.status(200).send(resType);
     } else {
       resType["Status"] = true;
       resType["Message"] = "No Student Details is found";
-      res.status(400).send(resType);
+      return res.status(400).send(resType);
     }
   });
 });
