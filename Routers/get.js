@@ -2,7 +2,7 @@ const router = require("express").Router();
 const studentDetail = require("../Models/student-details");
 
 // Student Details
-router.get("/student-details/:currentpage/:pagelimit", async (req, res) => {
+router.get("/student-details", async (req, res) => {
   const resType = {
     Status: false,
     Data: [],
@@ -13,19 +13,19 @@ router.get("/student-details/:currentpage/:pagelimit", async (req, res) => {
       resType["Message"] = err.message;
       res.status(400).send(resType);
     }
-    if (!req.params.currentpage || req.params.currentpage == 0) {
+    if (!req.query.currentpage || req.query.currentpage == 0) {
       resType["Message"] = "Current page is Required and it can not be Zero";
       return res.status(400).send(resType);
     }
-    if (!req.params.pagelimit || req.params.pagelimit == 0) {
+    if (!req.query.pagelimit || req.query.pagelimit == 0) {
       resType["Message"] = "Page limit is Required and it can not be Zero";
       return res.status(400).send(resType);
     }
-    var startIndex = (req.params.currentpage - 1) * req.params.pagelimit;
+    var startIndex = (req.query.currentpage - 1) * req.query.pagelimit;
     const studentData = [];
     for (
       let i = startIndex;
-      i <= req.params.pagelimit * req.params.currentpage - 1;
+      i <= req.query.pagelimit * req.query.currentpage - 1;
       i++
     ) {
       if (params[i]) {
