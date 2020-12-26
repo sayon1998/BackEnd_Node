@@ -1,40 +1,40 @@
 const mongoose = require("mongoose");
 
 const studentSchema = new mongoose.Schema({
-  std_name: {
+  name: {
     type: String,
     required: true,
   },
-  std_roll: {
+  roll: {
     type: String,
     required: true,
   },
-  std_regno: {
+  regno: {
     type: String,
   },
-  std_email: {
+  email: {
     type: String,
   },
-  std_phno: {
+  phno: {
     type: Number,
     required: true,
   },
-  std_address: {
+  address: {
     type: String,
   },
-  std_pin: {
+  pin: {
     type: Number,
     required: true,
   },
-  std_course: {
+  course: {
     type: String,
     required: true,
   },
-  std_stream: {
+  stream: {
     type: String,
     required: true,
   },
-  std_college: {
+  college: {
     type: String,
     required: true,
   },

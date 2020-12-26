@@ -9,47 +9,47 @@ router.post("/student-details", async (req, res) => {
     Message: "",
   };
   if (JSON.stringify(req.body) != "{}") {
-    if (req.body.stdname == "") {
+    if (req.body.name == "") {
       resType["Message"] = "Student's Name is Required";
       return res.status(400).send(resType);
-    } else if (req.body.stdroll == "") {
+    } else if (req.body.roll == "") {
       resType["Message"] = "Student's Roll is Required";
       return res.status(400).send(resType);
-    } else if (req.body.stdphno == null) {
+    } else if (req.body.phno == null) {
       resType["Message"] = "Student's Phone Number is Required";
       return res.status(400).send(resType);
-    } else if (req.body.stdpin == null) {
+    } else if (req.body.pin == null) {
       resType["Message"] = "Pin Code is Required";
       return res.status(400).send(resType);
-    } else if (req.body.stdcourse == "") {
+    } else if (req.body.course == "") {
       resType["Message"] = "Course is Required";
       return res.status(400).send(resType);
-    } else if (req.body.stdstream == "") {
+    } else if (req.body.stream == "") {
       resType["Message"] = "Stream is Required";
       return res.status(400).send(resType);
-    } else if (req.body.stdcollege == "") {
+    } else if (req.body.college == "") {
       resType["Message"] = "College is Required";
       return res.status(400).send(resType);
     } else {
-      if (JSON.stringify(req.body.stdphno).length > 10) {
+      if (JSON.stringify(req.body.phno).length > 10) {
         resType["Message"] = "Phone Number can not be exceed 10 digit";
         return res.status(400).send(resType);
-      } else if (JSON.stringify(req.body.stdpin).length > 6) {
+      } else if (JSON.stringify(req.body.pin).length > 6) {
         resType["Message"] = "PIN code can not be exceed 6 digit";
         return res.status(400).send(resType);
       } else {
-        if (validation(req.body.stdemail)) {
+        if (validation(req.body.email)) {
           const studentData = new studentDetail({
-            std_name: req.body.stdname,
-            std_roll: req.body.stdroll,
-            std_regno: req.body.stdregno,
-            std_email: req.body.stdemail,
-            std_address: req.body.stdaddress,
-            std_phno: req.body.stdphno,
-            std_pin: req.body.stdpin,
-            std_course: req.body.stdcourse,
-            std_stream: req.body.stdstream,
-            std_college: req.body.stdcollege,
+            name: req.body.name,
+            roll: req.body.roll,
+            regno: req.body.regno,
+            email: req.body.email,
+            address: req.body.address,
+            phno: req.body.phno,
+            pin: req.body.pin,
+            course: req.body.course,
+            stream: req.body.stream,
+            college: req.body.college,
           });
           try {
             resType["Data"] = [await studentData.save()];

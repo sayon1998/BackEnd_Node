@@ -20,8 +20,8 @@ mongoose.connect(
 // Middleware
 app.use(express.json());
 // Router Middleware
-app.use("/api/post", allPostRoute);
-app.use("/api/get", allGetRoute);
+app.use("/api", allPostRoute);
+app.use("/api", allGetRoute);
 
 app.listen(port, function () {
   console.log("Server is running on port" + port);
