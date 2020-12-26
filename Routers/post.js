@@ -15,7 +15,7 @@ router.post("/student-details", async (req, res) => {
     } else if (req.body.roll == "") {
       resType["Message"] = "Student's Roll is Required";
       return res.status(400).send(resType);
-    } else if (req.body.phno == null) {
+    } else if (req.body.phone == null) {
       resType["Message"] = "Student's Phone Number is Required";
       return res.status(400).send(resType);
     } else if (req.body.pin == null) {
@@ -31,7 +31,7 @@ router.post("/student-details", async (req, res) => {
       resType["Message"] = "College is Required";
       return res.status(400).send(resType);
     } else {
-      if (JSON.stringify(req.body.phno).length > 10) {
+      if (JSON.stringify(req.body.phone).length > 10) {
         resType["Message"] = "Phone Number can not be exceed 10 digit";
         return res.status(400).send(resType);
       } else if (JSON.stringify(req.body.pin).length > 6) {
@@ -45,7 +45,7 @@ router.post("/student-details", async (req, res) => {
             regno: req.body.regno,
             email: req.body.email,
             address: req.body.address,
-            phno: req.body.phno,
+            phone: req.body.phone,
             pin: req.body.pin,
             course: req.body.course,
             stream: req.body.stream,
