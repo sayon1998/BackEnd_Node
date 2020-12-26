@@ -5,6 +5,12 @@ const studentSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  publicid: {
+    type: String,
+  },
+  imageurl: {
+    type: String,
+  },
   roll: {
     type: String,
     required: true,

@@ -1,6 +1,8 @@
 const router = require("express").Router();
 const studentDetail = require("../Models/student-details");
 const validation = require("../Service/validation");
+const request = require("request");
+const cloudinary = require("./image-upload");
 // Student Details Insert
 router.post("/student-details", async (req, res) => {
   const resType = {
@@ -39,6 +41,8 @@ router.post("/student-details", async (req, res) => {
         return res.status(400).send(resType);
       } else {
         if (validation(req.body.email)) {
+          if (req.files.photo) {
+          }
           const studentData = new studentDetail({
             name: req.body.name,
             roll: req.body.roll,
