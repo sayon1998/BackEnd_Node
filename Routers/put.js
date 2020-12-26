@@ -1,8 +1,9 @@
 const router = require("express").Router();
 const studentDetail = require("../Models/student-details");
 const validation = require("../Service/validation");
-// Student Details Insert
-router.post("/student-details", async (req, res) => {
+
+// Student Details
+router.put("/student-details/:_id", async (req, res) => {
   const resType = {
     Status: false,
     Data: [],
@@ -39,22 +40,24 @@ router.post("/student-details", async (req, res) => {
         return res.status(400).send(resType);
       } else {
         if (validation(req.body.email)) {
-          const studentData = new studentDetail({
-            name: req.body.name,
-            roll: req.body.roll,
-            regno: req.body.regno,
-            email: req.body.email,
-            address: req.body.address,
-            phone: req.body.phone,
-            pin: req.body.pin,
-            course: req.body.course,
-            stream: req.body.stream,
-            college: req.body.college,
-          });
+          const updatedData = await studentDetail.findByIdAndUpdate(
+            { _id: req.params._id },
+            req.body,
+            async (err, params) => {
+              if (err) {
+                resType["Message"] = err.message;
+                return res.status(400).send(resType);
+              }
+            }
+          );
+          if (!updatedData) {
+            resType["Message"] = "Student Details is not Present in DataBase";
+            return res.status(400).send(resType);
+          }
           try {
-            resType["Data"] = [await studentData.save()];
+            resType["Data"] = [updatedData];
             resType["Status"] = true;
-            resType["Message"] = "Student Details is Inserted Successfully";
+            resType["Message"] = "Student Details is Updated Successfully";
             return res.status(200).send(resType);
           } catch (err) {
             resType["Message"] = err.message;

@@ -7,6 +7,8 @@ const port = process.env.PORT || 3000;
 // Routes
 const allPostRoute = require("./Routers/post");
 const allGetRoute = require("./Routers/get");
+const allPutRoute = require("./Routers/put");
+const allDeleteRoute = require("./Routers/delete");
 //Environment Setup
 dotEnv.config();
 
@@ -22,6 +24,8 @@ app.use(express.json());
 // Router Middleware
 app.use("/api", allPostRoute);
 app.use("/api", allGetRoute);
+app.use("/api", allPutRoute);
+app.use("/api", allDeleteRoute);
 
 app.listen(port, function () {
   console.log("Server is running on port" + port);
