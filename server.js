@@ -13,9 +13,7 @@ const allDeleteRoute = require("./Routers/delete");
 const imageUploadRoute = require("./Routers/image-upload");
 //Environment Setup
 dotEnv.config();
-const listener = app.listen(port, function () {
-  console.log("Server is running on port", listener.address());
-});
+
 // Connect Mongoose
 mongoose.connect(
   process.env.DB_CONNECT,
@@ -36,3 +34,7 @@ app.use("/api", allGetRoute);
 app.use("/api", allPutRoute);
 app.use("/api", allDeleteRoute);
 app.use("/api", imageUploadRoute);
+
+app.listen(port, function () {
+  console.log("Server is running on port" + port);
+});
