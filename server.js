@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const dotEnv = require("dotenv");
+const port = Process.env.PORT || 3000;
 
 // Routes
 const allPostRoute = require("./Routers/post");
@@ -22,6 +23,6 @@ app.use(express.json());
 app.use("/api/post", allPostRoute);
 app.use("/api/get", allGetRoute);
 
-app.listen(3000, function () {
-  console.log("Server is running on port 3000");
+app.listen(port, function () {
+  console.log("Server is running on port" + port);
 });
