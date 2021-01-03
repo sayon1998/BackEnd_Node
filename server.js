@@ -4,6 +4,9 @@ const fileUpload = require("express-fileupload");
 const mongoose = require("mongoose");
 const dotEnv = require("dotenv");
 const port = process.env.PORT || 3000;
+// const passport = require("passport");
+// const Strategy = require("passport-facebook");
+// const graph = require("fbgraph");
 
 // Routes
 const allPostRoute = require("./Routers/post");
@@ -23,6 +26,8 @@ mongoose.connect(
 
 // Middleware
 app.use(express.json());
+// app.use(passport.initialize());
+// app.use(passport.session());
 app.use(
   fileUpload({
     useTempFiles: true,
@@ -46,5 +51,14 @@ app.use("/api", allDeleteRoute);
 app.use("/api", imageUploadRoute);
 
 app.listen(port, function () {
-  console.log("Server is running on port" + port);
+  console.log("Server is running on port " + port);
 });
+
+// //Facebook Setup
+// passport.serializeUser((user, cb) => {
+//   cb(null, user);
+// });
+
+// passport.deserializeUser((obj, cb) => {
+//   cb(null, obj);
+// });
