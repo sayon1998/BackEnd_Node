@@ -6,6 +6,7 @@ const validation = require("../Service/validation");
 const request = require("request");
 const fs = require("fs");
 const jwt = require("jsonwebtoken");
+const jwtTokenVerify = require("../Service/jwt-token-verify");
 
 // Student Details Insert
 router.post("/student-details", async (req, res) => {
@@ -115,63 +116,81 @@ router.post("/savedetails", async (req, res) => {
     resType["Message"] = "User's Name is Required";
     return res.status(400).send(resType);
   }
-  const token = jwt.sign(
-    { _id: req.body.username + Math.random() * 100000000000000000 },
-    process.env.TOKEN_SECRET
-  );
-  const saveDetails = new userDetails({
-    username: req.body.username,
-    token: token,
-  });
-  try {
-    resType["Message"] = "Successful";
-    resType["Status"] = true;
-    resType["Data"] = [await saveDetails.save()];
-    return res.status(200).send(resType);
-  } catch (err) {
-    resType["Message"] = err.message;
+  if (!req.body.role) {
+    resType["Message"] = "User's Role is Required";
     return res.status(400).send(resType);
+  }
+  const prevData = await userDetails.findOne({ username: req.body.username });
+  if (prevData) {
+    resType["Message"] = "Username is already exist";
+    return res.status(400).send(resType);
+  } else {
+    const token = jwt.sign(
+      { _id: req.body.username, role: req.body.role },
+      process.env.TOKEN_SECRET,
+      {
+        issuer: "sayonchakraborty1998@gmail.com",
+        audience: req.body.username,
+      }
+    );
+    const saveDetails = new userDetails({
+      username: req.body.username,
+      token: token,
+    });
+    try {
+      resType["Message"] = "Successful";
+      resType["Status"] = true;
+      resType["Data"] = [await saveDetails.save()];
+      return res.status(200).send(resType);
+    } catch (err) {
+      resType["Message"] = err.message;
+      return res.status(400).send(resType);
+    }
   }
 });
 // Save User Messages
-router.post("/savemessages", async (req, res) => {
-  const resType = {
-    Status: false,
-    Data: [],
-    Message: "",
-  };
-  if (!req.body.userid) {
-    resType["Message"] = "User's Id is Required";
-    return res.status(400).send(resType);
-  }
-  const Data = await messages.findOne({ userid: req.body.userid });
-  console.log(Data);
-  if (Data) {
-    await messages.findOneAndUpdate(
-      { _id: Data._id },
-      { message: Data.message + "_" + req.body.message },
-      async (err, params) => {
-        if (err) {
-          resType["Message"] = err.message;
-          return res.status(400).send(resType);
+router.post(
+  "/savemessages",
+  jwtTokenVerify.isAuthenticated,
+  async (req, res) => {
+    const resType = {
+      Status: false,
+      Data: [],
+      Message: "",
+    };
+    if (!req.body.userid) {
+      resType["Message"] = "User's Id is Required";
+      return res.status(400).send(resType);
+    }
+    const Data = await messages.findOne({ userid: req.body.userid });
+    // console.log(Data);
+    if (Data) {
+      await messages.findOneAndUpdate(
+        { _id: Data._id },
+        { message: Data.message + "_" + req.body.message + "|" + new Date() },
+        async (err, params) => {
+          if (err) {
+            resType["Message"] = err.message;
+            return res.status(400).send(resType);
+          }
+          resType["Message"] = "Successfully Message Sent";
+          resType["Status"] = true;
+          resType["Data"] = [];
+          return res.status(200).send(resType);
         }
-        resType["Message"] = "Successfully Message Sent";
-        resType["Status"] = true;
-        resType["Data"] = [];
-        return res.status(200).send(resType);
-      }
-    );
-  } else {
-    const messageDetails = new messages({
-      userid: req.body.userid,
-      message: req.body.message,
-    });
-    await messageDetails.save();
-    resType["Message"] = "Successfully Message Sent";
-    resType["Status"] = true;
-    resType["Data"] = [];
-    return res.status(200).send(resType);
+      );
+    } else {
+      const messageDetails = new messages({
+        userid: req.body.userid,
+        message: req.body.message + "|" + new Date(),
+      });
+      await messageDetails.save();
+      resType["Message"] = "Successfully Message Sent";
+      resType["Status"] = true;
+      resType["Data"] = [];
+      return res.status(200).send(resType);
+    }
   }
-});
+);
 
 module.exports = router;
