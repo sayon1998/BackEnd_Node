@@ -3,6 +3,8 @@ const studentDetail = require("../Models/student-details");
 const passport = require("passport");
 const Strategy = require("passport-facebook");
 const axios = require("axios");
+const jwtTokenVerify = require("../Service/jwt-token-verify");
+const messages = require("../Models/messages");
 // passport.use(
 //   new Strategy(
 //     {
@@ -118,4 +120,37 @@ router.get("/student-details", async (req, res) => {
     }
   });
 });
+router.get(
+  "/message-details",
+  jwtTokenVerify.isAuthenticated,
+  async (req, res) => {
+    const resType = {
+      Status: false,
+      Data: [],
+      Message: "",
+    };
+    const userMessages = await messages.findOne({ userid: req.body._id });
+    if (!userMessages) {
+      resType["Message"] = "You have no messages yet";
+      return res.status(400).send(resType);
+    }
+    try {
+      const messageSplit = userMessages["message"].split("_");
+      const messageDetails = [];
+      for (let i = 0; i < messageSplit.length; i++) {
+        messageDetails.push({
+          message: messageSplit[i].split("|")[0],
+          date: messageSplit[i].split("|")[1],
+        });
+      }
+      resType["Message"] = "Successful";
+      resType["Status"] = true;
+      resType["Data"] = messageDetails;
+      return res.status(400).send(resType);
+    } catch (err) {
+      resType["Message"] = err.message;
+      return res.status(400).send(resType);
+    }
+  }
+);
 module.exports = router;
