@@ -5,6 +5,7 @@ const Strategy = require("passport-facebook");
 const axios = require("axios");
 const jwtTokenVerify = require("../Service/jwt-token-verify");
 const messages = require("../Models/messages");
+const userDetails = require("../Models/user-details");
 // passport.use(
 //   new Strategy(
 //     {
@@ -121,7 +122,7 @@ router.get("/student-details", async (req, res) => {
   });
 });
 router.get(
-  "/message-details",
+  "/message-details/:_id",
   jwtTokenVerify.isAuthenticated,
   async (req, res) => {
     const resType = {
@@ -129,10 +130,10 @@ router.get(
       Data: [],
       Message: "",
     };
-    const userMessages = await messages.findOne({ userid: req.body._id });
+    const userMessages = await messages.findOne({ userid: req.params._id });
     if (!userMessages) {
       resType["Message"] = "You have no messages yet";
-      return res.status(400).send(resType);
+      return res.status(200).send(resType);
     }
     try {
       const messageSplit = userMessages["message"].split("_");
@@ -146,11 +147,67 @@ router.get(
       resType["Message"] = "Successful";
       resType["Status"] = true;
       resType["Data"] = messageDetails;
-      return res.status(400).send(resType);
+      return res.status(200).send(resType);
     } catch (err) {
       resType["Message"] = err.message;
       return res.status(400).send(resType);
     }
+  }
+);
+router.get("/search-user/:searchdata", async (req, res) => {
+  const resType = {
+    Status: false,
+    Data: [],
+    Message: "",
+  };
+  await userDetails.find({}, async (err, params) => {
+    if (err) {
+      resType["Message"] = err.message;
+      return res.status(400).send(resType);
+    }
+    if (params.findIndex((x) => x.username == req.params.searchdata) != -1) {
+      resType["Message"] = "Username is not available";
+      return res.status(400).send(resType);
+    }
+  });
+  try {
+    resType["Status"] = true;
+    resType["Message"] = "Username is available";
+    return res.status(200).send(resType);
+  } catch (err) {
+    resType["Message"] = err.message;
+    return res.status(400).send(resType);
+  }
+});
+router.get(
+  "/user-details/",
+  jwtTokenVerify.isAuthenticated,
+  async (req, res) => {
+    const resType = {
+      Status: false,
+      Data: [],
+      Message: "",
+    };
+    const userName = req.userNameFromJWT;
+    await userDetails.findOne({ username: userName }, async (err, params) => {
+      if (err) {
+        resType["Message"] = err.message;
+        return res.status(400).send(resType);
+      }
+      if (!params) {
+        resType["Message"] = "User is not Registered";
+        return res.status(200).send(resType);
+      }
+      try {
+        resType["Data"] = [params];
+        resType["Message"] = "Successful";
+        resType["Status"] = true;
+        return res.status(200).send(resType);
+      } catch (err) {
+        resType["Message"] = err.message;
+        return res.status(400).send(resType);
+      }
+    });
   }
 );
 module.exports = router;

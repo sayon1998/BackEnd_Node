@@ -135,7 +135,9 @@ router.post("/savedetails", async (req, res) => {
     );
     const saveDetails = new userDetails({
       username: req.body.username,
+      role: req.body.role,
       token: token,
+      link: "http://localhost:4200/sender/" + token,
     });
     try {
       resType["Message"] = "Successful";
@@ -192,5 +194,32 @@ router.post(
     }
   }
 );
+router.post("/user-login", async (req, res) => {
+  const resType = {
+    Status: false,
+    Data: [],
+    Message: "",
+  };
+  if (!req.body.username) {
+    resType["Message"] = "Username is Required";
+    return res.status(400).send(resType);
+  }
+  if (req.body.role == "user") {
+    const userData = await userDetails.findOne({ username: req.body.username });
+    if (!userData) {
+      resType["Message"] = "Username is not registered";
+      return res.status(400).send(resType);
+    }
+    try {
+      resType["Status"] = true;
+      resType["Message"] = "Successful";
+      resType["Data"] = [userData];
+      return res.status(200).send(resType);
+    } catch (err) {
+      resType["Message"] = err.message;
+      return res.status(400).send(resType);
+    }
+  }
+});
 
 module.exports = router;
