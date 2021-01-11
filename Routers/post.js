@@ -7,6 +7,7 @@ const request = require("request");
 const fs = require("fs");
 const jwt = require("jsonwebtoken");
 const jwtTokenVerify = require("../Service/jwt-token-verify");
+const btoa = require("btoa");
 
 // Student Details Insert
 router.post("/student-details", async (req, res) => {
@@ -137,7 +138,8 @@ router.post("/savedetails", async (req, res) => {
       username: req.body.username,
       role: req.body.role,
       token: token,
-      link: "https://anonymous-ssr.herokuapp.com/sender/" + token,
+      link:
+        "https://anonymous-ssr.herokuapp.com/sender/" + btoa(req.body.username),
     });
     try {
       resType["Message"] = "Successful";

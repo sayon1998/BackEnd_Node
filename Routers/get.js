@@ -179,17 +179,16 @@ router.get("/search-user/:searchdata", async (req, res) => {
     return res.status(400).send(resType);
   }
 });
-router.get(
-  "/user-details/",
-  jwtTokenVerify.isAuthenticated,
-  async (req, res) => {
-    const resType = {
-      Status: false,
-      Data: [],
-      Message: "",
-    };
-    const userName = req.userNameFromJWT;
-    await userDetails.findOne({ username: userName }, async (err, params) => {
+router.get("/user-details/:username", async (req, res) => {
+  const resType = {
+    Status: false,
+    Data: [],
+    Message: "",
+  };
+  // const userName = req.userNameFromJWT;
+  await userDetails.findOne(
+    { username: req.params.username },
+    async (err, params) => {
       if (err) {
         resType["Message"] = err.message;
         return res.status(400).send(resType);
@@ -207,7 +206,7 @@ router.get(
         resType["Message"] = err.message;
         return res.status(400).send(resType);
       }
-    });
-  }
-);
+    }
+  );
+});
 module.exports = router;
