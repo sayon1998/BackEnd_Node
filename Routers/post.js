@@ -140,6 +140,8 @@ router.post("/savedetails", async (req, res) => {
       token: token,
       link:
         "https://anonymous-ssr.herokuapp.com/sender/" + btoa(req.body.username),
+      longitude: "",
+      latitude: "",
     });
     try {
       resType["Message"] = "Successful";
@@ -222,6 +224,32 @@ router.post("/user-login", async (req, res) => {
       return res.status(400).send(resType);
     }
   }
+});
+router.post("/update-details", async (req, res) => {
+  const resType = {
+    Status: false,
+    Data: [],
+    Message: "",
+  };
+  await userDetails.findByIdAndUpdate(
+    { _id: req.body._id },
+    { latitude: req.body.latitude, longitude: req.body.longitude },
+    async (err, params) => {
+      if (err) {
+        resType["Message"] = err.message;
+        return res.status(400).send(resType);
+      }
+      try {
+        resType["Status"] = true;
+        resType["Message"] = "Successful";
+        resType["Data"] = [];
+        return res.status(200).send(resType);
+      } catch (err) {
+        resType["Message"] = err.message;
+        return res.status(400).send(resType);
+      }
+    }
+  );
 });
 
 module.exports = router;

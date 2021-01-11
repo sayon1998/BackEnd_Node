@@ -9,9 +9,12 @@ const messageSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  // deviceinfo: {
-  //   type: String,
-  // },
+  longitude: {
+    type: String,
+  },
+  latitude: {
+    type: String,
+  },
   date: {
     type: Date,
     default: Date.now,
