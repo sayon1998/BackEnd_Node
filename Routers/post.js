@@ -137,7 +137,7 @@ router.post("/savedetails", async (req, res) => {
       username: req.body.username,
       role: req.body.role,
       token: token,
-      link: "http://localhost:4200/sender/" + token,
+      link: "https://anonymous-ssr.herokuapp.com/sender/" + token,
     });
     try {
       resType["Message"] = "Successful";
