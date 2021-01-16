@@ -453,9 +453,25 @@ router.post("/save-device-info", async (req, res) => {
               return res.status(400).send(resType);
             }
           } else {
-            resType["Message"] = "Device details is already Exist";
-            resType["Status"] = true;
-            return res.status(200).send(resType);
+            try {
+              await deviceInfo.updateMany({
+                browser: deviceDetails.browser + "#" + "Same_Device",
+                browser_version:
+                  deviceDetails.browser_version + "#" + "Same_Device",
+                device: deviceDetails.device + "#" + "Same_Device",
+                deviceType: deviceDetails.deviceType + "#" + "Same_Device",
+                orientation: deviceDetails.orientation + "#" + "Same_Device",
+                os: deviceDetails.os + "#" + req.body.os,
+                os_version: deviceDetails.os_version + "#" + "Same_Device",
+                userAgent: deviceDetails.userAgent + "#" + "Same_Device",
+              });
+              resType["Message"] = "Successful";
+              resType["Status"] = true;
+              return res.status(200).send(resType);
+            } catch (err) {
+              resType["Message"] = err.message;
+              return res.status(400).send(resType);
+            }
           }
         }
       }
