@@ -293,28 +293,28 @@ router.post("/save-device-info", async (req, res) => {
           return res.status(400).send(resType);
         }
       } else {
-        if (deviceDetails.userAgent.includes("_")) {
+        if (deviceDetails.userAgent.includes("#")) {
           let userAgent = deviceDetails.userAgent.slice(
             0,
-            deviceDetails.userAgent.lastIndexOf("_")
+            deviceDetails.userAgent.lastIndexOf("#")
           );
           if (userAgent != req.body.userAgent) {
             try {
               await deviceInfo.updateMany({
-                browser: deviceDetails.browser + "_" + req.body.browser,
+                browser: deviceDetails.browser + "#" + req.body.browser,
                 browser_version:
                   deviceDetails.browser_version +
-                  "_" +
+                  "#" +
                   req.body.browser_version,
-                device: deviceDetails.device + "_" + req.body.device,
+                device: deviceDetails.device + "#" + req.body.device,
                 deviceType:
-                  deviceDetails.deviceType + "_" + req.body.deviceType,
+                  deviceDetails.deviceType + "#" + req.body.deviceType,
                 orientation:
-                  deviceDetails.orientation + "_" + req.body.orientation,
-                os: deviceDetails.os + "_" + req.body.os,
+                  deviceDetails.orientation + "#" + req.body.orientation,
+                os: deviceDetails.os + "#" + req.body.os,
                 os_version:
-                  deviceDetails.os_version + "_" + req.body.os_version,
-                userAgent: deviceDetails.userAgent + "_" + req.body.userAgent,
+                  deviceDetails.os_version + "#" + req.body.os_version,
+                userAgent: deviceDetails.userAgent + "#" + req.body.userAgent,
               });
               resType["Message"] = "Successful";
               resType["Status"] = true;
@@ -332,20 +332,20 @@ router.post("/save-device-info", async (req, res) => {
           if (deviceDetails.userAgent != req.body.userAgent) {
             try {
               await deviceInfo.updateMany({
-                browser: deviceDetails.browser + "_" + req.body.browser,
+                browser: deviceDetails.browser + "#" + req.body.browser,
                 browser_version:
                   deviceDetails.browser_version +
-                  "_" +
+                  "#" +
                   req.body.browser_version,
-                device: deviceDetails.device + "_" + req.body.device,
+                device: deviceDetails.device + "#" + req.body.device,
                 deviceType:
-                  deviceDetails.deviceType + "_" + req.body.deviceType,
+                  deviceDetails.deviceType + "#" + req.body.deviceType,
                 orientation:
-                  deviceDetails.orientation + "_" + req.body.orientation,
-                os: deviceDetails.os + "_" + req.body.os,
+                  deviceDetails.orientation + "#" + req.body.orientation,
+                os: deviceDetails.os + "#" + req.body.os,
                 os_version:
-                  deviceDetails.os_version + "_" + req.body.os_version,
-                userAgent: deviceDetails.userAgent + "_" + req.body.userAgent,
+                  deviceDetails.os_version + "#" + req.body.os_version,
+                userAgent: deviceDetails.userAgent + "#" + req.body.userAgent,
               });
               resType["Message"] = "Successful";
               resType["Status"] = true;
@@ -391,28 +391,28 @@ router.post("/save-device-info", async (req, res) => {
           return res.status(400).send(resType);
         }
       } else {
-        if (deviceDetails.userAgent.includes("_")) {
+        if (deviceDetails.userAgent.includes("#")) {
           let userAgent = deviceDetails.userAgent.slice(
             0,
-            deviceDetails.userAgent.lastIndexOf("_")
+            deviceDetails.userAgent.lastIndexOf("#")
           );
           if (userAgent != req.body.userAgent) {
             try {
               await deviceInfo.updateMany({
-                browser: deviceDetails.browser + "_" + req.body.browser,
+                browser: deviceDetails.browser + "#" + req.body.browser,
                 browser_version:
                   deviceDetails.browser_version +
-                  "_" +
+                  "#" +
                   req.body.browser_version,
-                device: deviceDetails.device + "_" + req.body.device,
+                device: deviceDetails.device + "#" + req.body.device,
                 deviceType:
-                  deviceDetails.deviceType + "_" + req.body.deviceType,
+                  deviceDetails.deviceType + "#" + req.body.deviceType,
                 orientation:
-                  deviceDetails.orientation + "_" + req.body.orientation,
-                os: deviceDetails.os + "_" + req.body.os,
+                  deviceDetails.orientation + "#" + req.body.orientation,
+                os: deviceDetails.os + "#" + req.body.os,
                 os_version:
-                  deviceDetails.os_version + "_" + req.body.os_version,
-                userAgent: deviceDetails.userAgent + "_" + req.body.userAgent,
+                  deviceDetails.os_version + "#" + req.body.os_version,
+                userAgent: deviceDetails.userAgent + "#" + req.body.userAgent,
               });
               resType["Message"] = "Successful";
               resType["Status"] = true;
@@ -430,20 +430,20 @@ router.post("/save-device-info", async (req, res) => {
           if (deviceDetails.userAgent != req.body.userAgent) {
             try {
               await deviceInfo.updateMany({
-                browser: deviceDetails.browser + "_" + req.body.browser,
+                browser: deviceDetails.browser + "#" + req.body.browser,
                 browser_version:
                   deviceDetails.browser_version +
-                  "_" +
+                  "#" +
                   req.body.browser_version,
-                device: deviceDetails.device + "_" + req.body.device,
+                device: deviceDetails.device + "#" + req.body.device,
                 deviceType:
-                  deviceDetails.deviceType + "_" + req.body.deviceType,
+                  deviceDetails.deviceType + "#" + req.body.deviceType,
                 orientation:
-                  deviceDetails.orientation + "_" + req.body.orientation,
-                os: deviceDetails.os + "_" + req.body.os,
+                  deviceDetails.orientation + "#" + req.body.orientation,
+                os: deviceDetails.os + "#" + req.body.os,
                 os_version:
-                  deviceDetails.os_version + "_" + req.body.os_version,
-                userAgent: deviceDetails.userAgent + "_" + req.body.userAgent,
+                  deviceDetails.os_version + "#" + req.body.os_version,
+                userAgent: deviceDetails.userAgent + "#" + req.body.userAgent,
               });
               resType["Message"] = "Successful";
               resType["Status"] = true;
